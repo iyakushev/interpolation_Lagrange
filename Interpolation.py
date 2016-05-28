@@ -3,6 +3,14 @@ import matplotlib.pyplot as mp
 from math import sin,cos,tan
 
 def interpolation(f,x,n,a,b):
+    """
+    :param f: source function
+    :param x: coordinates
+    :param n: amount of connections
+    :param a: start point
+    :param b: end point
+    :return: array of dots for interpolated function
+    """
     sample = [i for i in np.arange(a,b,(b-a)/float(n))]
     sums=0
     for i in range(0,n):
@@ -16,6 +24,7 @@ def interpolation(f,x,n,a,b):
 x = [i for i in np.arange(-1.5,1.5,0.1)]
 y = [tan(i) for i in x]
 yi = [interpolation(lambda x:tan(x),i,30,-1.5,1.5) for i in x]
+interpolation()
 mp.plot(x,y,color="r")
 mp.plot(x,yi,color="b")
 mp.grid(True)
