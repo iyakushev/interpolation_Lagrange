@@ -1,31 +1,36 @@
 import numpy as np
 import matplotlib.pyplot as mp
+import matplotlib.patches as legend
 from math import sin,cos,tan
 
-def interpolation(f,x,n,a,b):
+def interpolation(y,x,t):
     """
-    :param f: source function
-    :param x: coordinates
-    :param n: amount of connections
-    :param a: start point
-    :param b: end point
-    :return: array of dots for interpolated function
+    Evaluates Interpolation of fx in Lagrange form
+    :param y: DataSet of Y values
+    :param x: DataSet of X values
+    :param t: Interpolation node
+    :return:
     """
-    node = [i for i in np.arange(a,b,(b-a)/float(n))]
-    sums=0
-    for i in range(0,n):
-        product=1
-        for j in range(0,n):
-            if i!=j:
-                product*=(x-node[j])/(node[i]-node[j])
-        sums+=f(node[i])*product
+    sums = 0
+    k = len(y)
+    for i in range(k):
+        product = 1
+        for j in range(k):
+            if i != j:
+                product *= (t-x[j])/(x[i]-x[j])
+        sums += y[i]*product
     return sums
 
+n = 10
 x = [i for i in np.arange(-1.5,1.5,0.1)]
 y = [tan(i) for i in x]
-yi = [interpolation(lambda x:tan(x),i,30,-1.5,1.5) for i in x]
-mp.plot(x,y,color="r")
-mp.plot(x,yi,color="b")
-mp.grid(True)
+nx = [i for i in np.linspace(np.min(x),np.max(x),n)]
+print nx
+p = [interpolation(y,x,i) for i in nx]
+mp.xlabel("X")
+mp.ylabel("Y")
+mp.plot(x,y,color="#ca9942")
+mp.plot(nx,p,color="lightblue")
+mp.legend(handles = [legend.Patch(color = "#ca9942",label = "Original function"),
+                     legend.Patch(color = "lightblue",label = "Interpolation")])
 mp.show()
-
